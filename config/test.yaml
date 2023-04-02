@@ -1,0 +1,16 @@
+# Mandatory parameters
+speed_lim_v: 0.3
+speed_lim_w: 0.2 #default is 5.4
+
+accel_lim_v: 1.0
+accel_lim_w: 3.5 #default is 3.5
+
+# Optional parameters
+frequency: 30.0
+decel_factor: 1.0
+
+# Robot velocity feedback type:
+#  0 - none
+#  1 - odometry
+#  2 - end robot commands
+robot_feedback: 1

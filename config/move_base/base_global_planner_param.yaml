@@ -1,0 +1,10 @@
+GlobalPlanner:
+
+  use_dijkstra: true
+
+  use_grid_path: false
+
+  default_tolerance: 0.0
+
+  allow_unknown: false
+  

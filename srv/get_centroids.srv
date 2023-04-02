@@ -1,0 +1,5 @@
+# Request with frontiers
+geometry_msgs/Point[] frontiers
+---
+# response to centroids
+geometry_msgs/Point[] centroids

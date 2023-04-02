@@ -1,0 +1,46 @@
+<launch>
+  
+    <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+            -configuration_directory $(find frontier_exploration)/config/cartographer
+            -configuration_basename config.lua"
+        output="screen">
+        <remap from="scan" to="scan" />
+    </node>
+
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.1" />
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base_node" output="screen">
+        <param name="footprint_padding" value="0.01" />
+        <param name="controller_frequency" value="5.0" />
+        <param name="controller_patience" value="3.0" />
+        <param name="oscillation_timeout" value="30.0" />
+        <param name="oscillation_distance" value="0.5" />
+        <param name="planner_patience" value="1" />
+        <param name="controller_patience" value="1" /> 
+        <param name="recovery_behavior_enabled" value="false" />
+        <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS" />
+
+
+        <rosparam file="$(find frontier_exploration)/config/move_base/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find frontier_exploration)/config/move_base/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find frontier_exploration)/config/move_base/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find frontier_exploration)/config/move_base/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find frontier_exploration)/config/move_base/eband_local_planner_params.yaml" command="load" />
+    
+        <param name="NavfnROS/allow_unknown" value="false"/>
+        <param name="global_costmap/global_frame" value="map"/>
+        <param name="global_costmap/robot_base_frame" value="base_link"/>
+        <param name="global_costmap/laser_scan_sensor/sensor_frame" value="base_scan"/>
+        <param name="global_costmap/laser_scan_sensor/topic" value="scan"/>    
+        <param name="local_costmap/global_frame" value="odom"/>
+        <param name="local_costmap/robot_base_frame" value="base_link"/>
+        <param name="local_costmap/laser_scan_sensor/sensor_frame" value="base_scan"/>
+        <param name="local_costmap/laser_scan_sensor/topic" value="scan"/>
+        <param name="local_costmap/obstacle_layer/laser_scan_sensor/topic" value="scan"/>
+    </node>
+
+
+</launch>
+    

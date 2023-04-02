@@ -1,0 +1,39 @@
+<launch>
+    <master auto="start"/>
+    <arg name="x_pos" default="0.0"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <param name="use_sim_time" value="true"/>
+    <node pkg="tf" type="static_transform_publisher" name="map2inflated" args="0 0 0 0 0 0  /map /inflated_map 100"/>
+   
+    <!-- Open simulation environment -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find frontier_exploration)\world\house.world"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="false"/>
+        <arg name="debug" value="false"/>
+    </include> 
+    <!-- open robot model -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find frontier_exploration)/urdf/turtlebot2/turtlebot2.xacro" />
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot2 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="publish_frequency" value="100"/>
+    </node>
+    <!-- Launch frontier exploration node -->
+    <node pkg="frontier_exploration" type="frontier_planner" name="frontier_planner" output="screen" launch-prefix="gnome-terminal --">
+        <param name="obstacle_inflation" value="0.3"/>
+        <param name="map_revolution" value="0.1"/>
+        <param name="cmd_topic" value="cmd_vel"/>
+        <param name="robot_base_frame" value="base_link"/>
+        <param name="goal_tolerance" value="0.3"/>
+        <param name="obstacle_tolerance" value="0.5"/>
+        <param name="rotate_speed" value="0.5"/>
+    </node>
+
+    <!-- <include file="$(find frontier_exploration)/launch/move_gmapping.launch"/> -->
+    <include file="$(find frontier_exploration)/launch/move_cartographer.launch"/>
+    <!-- Open Rviz -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find frontier_exploration)/config/rviz/gmapping.rviz" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find frontier_exploration)/config/rviz/cartographer.rviz" />
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+    <master auto="start"/>
+    <node pkg="frontier_exploration" type="frontier_planner" name="frontier_planner" output="screen" launch-prefix="gnome-terminal ">
+        <param name="obstacle_inflation" value="0.5"/>
+        <param name="map_revolution" value="0.1"/>
+        <param name="cmd_topic" value="cmd_vel"/>
+        <param name="robot_base_frame" value="base_link"/>
+        <param name="goal_tolerance" value="1.0"/>
+        <param name="obstacle_tolerance" value="1.0"/>
+        <param name="rotate_speed" value="0.2"/>
+    </node>
+</launch>

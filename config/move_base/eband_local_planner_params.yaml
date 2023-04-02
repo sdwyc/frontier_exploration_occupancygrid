@@ -1,0 +1,24 @@
+EBandPlannerROS:
+
+  max_vel_lin: 0.7
+  min_vel_lin: 0.3
+  max_vel_th: 0.5
+  min_vel_th: 0.1
+  max_rotational_acceleration: 8.0 
+
+  differential_drive: true
+
+  eband_min_relative_overlap: 0.7
+
+  eband_external_force_gain: 3.0
+
+  num_iterations_eband_optimization: 4
+
+  xy_goal_tolerance: 0.3
+  yaw_goal_tolerance: 3.1415
+
+  Ctrl_Rate: 30
+
+  eband_equilibrium_relative_overshoot: 0.01
+  k_damp: 4.0
+  k_prop: 3.0
